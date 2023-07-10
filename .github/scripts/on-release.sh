@@ -23,6 +23,7 @@ RELEASE_PRE=`echo $EVENT_JSON | jq -r '.release.prerelease'`
 RELEASE_TAG=`echo $EVENT_JSON | jq -r '.release.tag_name'`
 RELEASE_BRANCH=`echo $EVENT_JSON | jq -r '.release.target_commitish'`
 RELEASE_ID=`echo $EVENT_JSON | jq -r '.release.id'`
+RELEASE_BODY=`echo $EVENT_JSON | jq -r '.release.body'`
 
 OUTPUT_DIR="$GITHUB_WORKSPACE/build"
 PACKAGE_NAME="esp32-$RELEASE_TAG"
