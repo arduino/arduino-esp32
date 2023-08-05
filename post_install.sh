@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-arduino_mbed_rules () {
+arduino_esp32_rules () {
     echo ""
     echo "# Arduino ESP32 bootloader mode udev rules"
     echo ""
@@ -14,7 +14,7 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
-arduino_mbed_rules > /etc/udev/rules.d/60-arduino-esp32.rules
+arduino_esp32_rules > /etc/udev/rules.d/60-arduino-esp32.rules
 
 # reload udev rules
 echo "Reload rules..."
