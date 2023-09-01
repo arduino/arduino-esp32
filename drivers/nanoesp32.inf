@@ -9,12 +9,15 @@ Class       = USBDevice
 ClassGUID   = {88BAE032-5A81-49f0-BC3D-A4FF138216D6}
 Provider    = %ManufacturerName%
 CatalogFile = nanoesp32.cat
-DriverVer   = 03/03/2020,10.48.00.000
+DriverVer   = 08/08/2023,10.48.01.000
 
 ; ========== Manufacturer/Models sections ===========
 
 [Manufacturer]
-%ManufacturerName% = Standard,NTamd64
+%ManufacturerName% = Standard,NTamd64,NTx86
+
+[Standard.NTx86]
+%DeviceName% =USB_Install, USB\VID_2341&PID_0070&MI_00
 
 [Standard.NTamd64]
 %DeviceName% =USB_Install, USB\VID_2341&PID_0070&MI_00
