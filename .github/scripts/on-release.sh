@@ -213,6 +213,7 @@ cp -f  "$GITHUB_WORKSPACE/tools/platformio-build.py"        "$PKG_DIR/tools/"
 echo "Cleaning up folders ..."
 find "$PKG_DIR" -name '*.DS_Store' -exec rm -f {} \;
 find "$PKG_DIR" -name '*.git*' -type f -delete
+find "$PKG_DIR" -name '.skip.esp32s3' -type f -exec bash -c 'echo rm -rf $(dirname "{}")' \; | tac | /bin/bash
 
 ##
 ## TEMP WORKAROUND FOR RV32 LONG PATH ON WINDOWS
@@ -289,7 +290,7 @@ LIBS_PACKAGE_ZIP="$LIBS_PROJ_NAME-$RELEASE_TAG.zip"
 
 # Get the libs package URL from the template
 LIBS_PACKAGE_SRC_ZIP="$OUTPUT_DIR/src-$LIBS_PROJ_NAME.zip"
-LIBS_PACKAGE_SRC_URL=`cat $PACKAGE_JSON_TEMPLATE | jq -r ".packages[0].tools[] | select(.name==\"$LIBS_PROJ_NAME\") | .systems[0].url"`
+LIBS_PACKAGE_SRC_URL=`cat $PACKAGE_JSON_TEMPLATE | jq -r ".packages[1].tools[] | select(.name==\"$LIBS_PROJ_NAME\") | .systems[0].url"`
 
 # Download the libs package
 echo "Downloading the libs archive ..."
@@ -305,6 +306,7 @@ mv "$OUTPUT_DIR/$EXTRACTED_DIR" "$LIBS_PKG_DIR" || exit 1
 echo "Cleaning up folders ..."
 find "$LIBS_PKG_DIR" -name '*.DS_Store' -exec rm -f {} \;
 find "$LIBS_PKG_DIR" -name '*.git*' -type f -delete
+find "$LIBS_PKG_DIR" -mindepth 1 -maxdepth 1 -type d \! -name esp32s3 -exec rm -rf {} \;
 
 # Compress package folder
 echo "Creating ZIP ..."
@@ -331,10 +333,10 @@ echo
 
 # Construct JQ argument with libs package data
 libs_jq_arg="\
-    (.packages[0].tools[] | select(.name==\"$LIBS_PROJ_NAME\")).systems[].url = \"$LIBS_PACKAGE_URL\" |\
-    (.packages[0].tools[] | select(.name==\"$LIBS_PROJ_NAME\")).systems[].archiveFileName = \"$LIBS_PACKAGE_ZIP\" |\
-    (.packages[0].tools[] | select(.name==\"$LIBS_PROJ_NAME\")).systems[].size = \"$LIBS_PACKAGE_SIZE\" |\
-    (.packages[0].tools[] | select(.name==\"$LIBS_PROJ_NAME\")).systems[].checksum = \"SHA-256:$LIBS_PACKAGE_SHA\""
+    (.packages[1].tools[] | select(.name==\"$LIBS_PROJ_NAME\")).systems[].url = \"$LIBS_PACKAGE_URL\" |\
+    (.packages[1].tools[] | select(.name==\"$LIBS_PROJ_NAME\")).systems[].archiveFileName = \"$LIBS_PACKAGE_ZIP\" |\
+    (.packages[1].tools[] | select(.name==\"$LIBS_PROJ_NAME\")).systems[].size = \"$LIBS_PACKAGE_SIZE\" |\
+    (.packages[1].tools[] | select(.name==\"$LIBS_PROJ_NAME\")).systems[].checksum = \"SHA-256:$LIBS_PACKAGE_SHA\""
 
 # Update template values for the libs package and store it in the build folder
 cat "$PACKAGE_JSON_TEMPLATE" | jq "$libs_jq_arg" > "$OUTPUT_DIR/package-$LIBS_PROJ_NAME.json"
@@ -350,20 +352,20 @@ RVTC_VERSION=`date -d "$RVTC_VERSION" '+%y%m'`
 rvtc_jq_arg="\
     (.packages[0].platforms[0].toolsDependencies[] | select(.name==\"$RVTC_NAME\")).version = \"$RVTC_VERSION\" |\
     (.packages[0].platforms[0].toolsDependencies[] | select(.name==\"$RVTC_NAME\")).name = \"$RVTC_NEW_NAME\" |\
-    (.packages[0].tools[] | select(.name==\"$RVTC_NAME\")).version = \"$RVTC_VERSION\" |\
-    (.packages[0].tools[] | select(.name==\"$RVTC_NAME\")).name = \"$RVTC_NEW_NAME\" |\
+    (.packages[1].tools[] | select(.name==\"$RVTC_NAME\")).version = \"$RVTC_VERSION\" |\
+    (.packages[1].tools[] | select(.name==\"$RVTC_NAME\")).name = \"$RVTC_NEW_NAME\" |\
     (.packages[0].platforms[0].toolsDependencies[] | select(.name==\"$X32TC_NAME\")).version = \"$RVTC_VERSION\" |\
     (.packages[0].platforms[0].toolsDependencies[] | select(.name==\"$X32TC_NAME\")).name = \"$X32TC_NEW_NAME\" |\
-    (.packages[0].tools[] | select(.name==\"$X32TC_NAME\")).version = \"$RVTC_VERSION\" |\
-    (.packages[0].tools[] | select(.name==\"$X32TC_NAME\")).name = \"$X32TC_NEW_NAME\" |\
+    (.packages[1].tools[] | select(.name==\"$X32TC_NAME\")).version = \"$RVTC_VERSION\" |\
+    (.packages[1].tools[] | select(.name==\"$X32TC_NAME\")).name = \"$X32TC_NEW_NAME\" |\
     (.packages[0].platforms[0].toolsDependencies[] | select(.name==\"$XS2TC_NAME\")).version = \"$RVTC_VERSION\" |\
     (.packages[0].platforms[0].toolsDependencies[] | select(.name==\"$XS2TC_NAME\")).name = \"$XS2TC_NEW_NAME\" |\
-    (.packages[0].tools[] | select(.name==\"$XS2TC_NAME\")).version = \"$RVTC_VERSION\" |\
-    (.packages[0].tools[] | select(.name==\"$XS2TC_NAME\")).name = \"$XS2TC_NEW_NAME\" |\
+    (.packages[1].tools[] | select(.name==\"$XS2TC_NAME\")).version = \"$RVTC_VERSION\" |\
+    (.packages[1].tools[] | select(.name==\"$XS2TC_NAME\")).name = \"$XS2TC_NEW_NAME\" |\
     (.packages[0].platforms[0].toolsDependencies[] | select(.name==\"$XS3TC_NAME\")).version = \"$RVTC_VERSION\" |\
     (.packages[0].platforms[0].toolsDependencies[] | select(.name==\"$XS3TC_NAME\")).name = \"$XS3TC_NEW_NAME\" |\
-    (.packages[0].tools[] | select(.name==\"$XS3TC_NAME\")).version = \"$RVTC_VERSION\" |\
-    (.packages[0].tools[] | select(.name==\"$XS3TC_NAME\")).name = \"$XS3TC_NEW_NAME\""
+    (.packages[1].tools[] | select(.name==\"$XS3TC_NAME\")).version = \"$RVTC_VERSION\" |\
+    (.packages[1].tools[] | select(.name==\"$XS3TC_NAME\")).name = \"$XS3TC_NEW_NAME\""
 cat "$PACKAGE_JSON_TEMPLATE" | jq "$rvtc_jq_arg" > "$OUTPUT_DIR/package-$LIBS_PROJ_NAME-rvfix.json"
 PACKAGE_JSON_TEMPLATE="$OUTPUT_DIR/package-$LIBS_PROJ_NAME-rvfix.json"
 
