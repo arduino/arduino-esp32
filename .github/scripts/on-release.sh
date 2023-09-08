@@ -214,6 +214,7 @@ cp -f $GITHUB_WORKSPACE/tools/platformio-build*.py          "$PKG_DIR/tools/"
 echo "Cleaning up folders ..."
 find "$PKG_DIR" -name '*.DS_Store' -exec rm -f {} \;
 find "$PKG_DIR" -name '*.git*' -type f -delete
+find "$PKG_DIR" -name '.skip.esp32s3' -type f -exec bash -c 'echo rm -rf $(dirname "{}")' \; | tac | /bin/bash
 
 # Replace tools locations in platform.txt
 echo "Generating platform.txt..."

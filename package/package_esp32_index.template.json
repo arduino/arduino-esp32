@@ -10,7 +10,7 @@
       },
       "platforms": [
         {
-          "name": "esp32",
+          "name": "Arduino ESP32 Boards",
           "architecture": "esp32",
           "version": "",
           "category": "ESP32",
@@ -23,32 +23,10 @@
           },
           "boards": [
             {
-              "name": "ESP32 Dev Board"
-            },
-            {
-              "name": "ESP32-S2 Dev Board"
-            },
-            {
-              "name": "ESP32-S3 Dev Board"
-            },
-            {
-              "name": "ESP32-C3 Dev Board"
-            },
-            {
               "name": "Arduino Nano ESP32"
             }
           ],
           "toolsDependencies": [
-            {
-              "packager": "esp32",
-              "name": "xtensa-esp32-elf-gcc",
-              "version": "esp-2021r2-patch5-8.4.0"
-            },
-            {
-              "packager": "esp32",
-              "name": "xtensa-esp32s2-elf-gcc",
-              "version": "esp-2021r2-patch5-8.4.0"
-            },
             {
               "packager": "esp32",
               "name": "xtensa-esp32s3-elf-gcc",
@@ -57,16 +35,6 @@
             {
               "packager": "esp32",
               "name": "xtensa-esp-elf-gdb",
-              "version": "11.2_20220823"
-            },
-            {
-              "packager": "esp32",
-              "name": "riscv32-esp-elf-gcc",
-              "version": "esp-2021r2-patch5-8.4.0"
-            },
-            {
-              "packager": "esp32",
-              "name": "riscv32-esp-elf-gdb",
               "version": "11.2_20220823"
             },
             {
