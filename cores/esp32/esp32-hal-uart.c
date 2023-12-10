@@ -149,9 +149,9 @@ bool uartIsDriverInstalled(uart_t* uart)
 // Negative Pin Number will keep it unmodified, thus this function can set individual pins
 bool uartSetPins(uart_t* uart, int8_t rxPin, int8_t txPin, int8_t ctsPin, int8_t rtsPin)
 {
-    if(uart == NULL) {
-        return false;
-    }
+    if(uart == NULL) {      // overtake in Release !
+        return false;       // overtake in Release !
+    }                       // overtake in Release !
     UART_MUTEX_LOCK();
     // IDF uart_set_pin() will issue necessary Error Message and take care of all GPIO Number validation.
     bool retCode = uart_set_pin(uart->num, txPin, rxPin, rtsPin, ctsPin) == ESP_OK; 
