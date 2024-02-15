@@ -1094,6 +1094,8 @@ arduino_unor4wifi_usb_bridge.serial.disableRTS=false
 
 arduino_unor4wifi_usb_bridge.build.tarch=xtensa
 arduino_unor4wifi_usb_bridge.build.bootloader_addr=0x0
+arduino_unor4wifi_usb_bridge.build.boot_app0_addr=0x9000
+arduino_unor4wifi_usb_bridge.build.app0_addr=0x50000
 arduino_unor4wifi_usb_bridge.build.target=esp32s3
 arduino_unor4wifi_usb_bridge.build.mcu=esp32s3
 arduino_unor4wifi_usb_bridge.build.core=esp32
