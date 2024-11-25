@@ -1,6 +1,6 @@
 # Name,   Type, SubType,   Offset,  Size, Flags
 otadata,  data, ota,       0x9000,  0x002000,
-cert,     data, undefined, 0xB000,  0x045000,
+cert,     data, 0x06,      0xB000,  0x045000,
 app0,     app,  ota_0,     0x50000, 0x190000,
 app1,     app,  ota_1,     0x1E0000,0x190000,
 spiffs,   data, spiffs,    0x370000,0x080000,
